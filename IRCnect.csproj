@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{70896B68-F96A-4D5B-B403-040E969B3798}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IRCnect</RootNamespace>
+    <AssemblyName>IRCnect</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\IRCnect.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\IRCnect.XML</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Channel\Interaction\Native\CommandID.cs" />
+    <Compile Include="Channel\Interaction\Native\NativeCommands.cs" />
+    <Compile Include="Channel\Interaction\PendingMessageArgs.cs" />
+    <Compile Include="Channel\Monitor\Replies\Actions\ActionsArgs.cs" />
+    <Compile Include="Channel\Monitor\Replies\Actions\ActionTypes.cs" />
+    <Compile Include="Channel\Monitor\Replies\Actions\ActionsFilter.cs" />
+    <Compile Include="Connection\Client.cs" />
+    <Compile Include="Channel\RoomVisitor.cs" />
+    <Compile Include="Channel\Interaction\Messenger.cs" />
+    <Compile Include="Channel\Monitor\IMonitor.cs" />
+    <Compile Include="Channel\Monitor\IMonitorBase.cs" />
+    <Compile Include="Channel\Monitor\Replies\RepliesArgs.cs" />
+    <Compile Include="Channel\Monitor\Replies\RepliesFilter.cs" />
+    <Compile Include="Channel\Monitor\Replies\Inbounds\Commands\CommandsArgs.cs" />
+    <Compile Include="Channel\Monitor\Replies\Inbounds\Commands\CommandsFilter.cs" />
+    <Compile Include="Channel\Monitor\Replies\Inbounds\Links\LinksArgs.cs" />
+    <Compile Include="Channel\Monitor\Replies\Inbounds\Links\LinksFilter.cs" />
+    <Compile Include="Channel\Monitor\Replies\Inbounds\InboundsArgs.cs" />
+    <Compile Include="Channel\Monitor\Replies\Inbounds\InboundsFilter.cs" />
+    <Compile Include="Channel\Monitor\MonitorArgs.cs" />
+    <Compile Include="Channel\Monitor\MonitorBase.cs" />
+    <Compile Include="Channel\Monitor\MonitorFilter.cs" />
+    <Compile Include="Channel\Monitor\MonitorManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Connection\Protocol.cs" />
+    <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\StreamIRC.cs" />
+    <Compile Include="Workers\IWorker.cs" />
+    <Compile Include="Workers\Worker.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
