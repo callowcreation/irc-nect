@@ -42,6 +42,7 @@
     <Compile Include="Channel\Interaction\Native\CommandID.cs" />
     <Compile Include="Channel\Interaction\Native\NativeCommands.cs" />
     <Compile Include="Channel\Interaction\PendingMessageArgs.cs" />
+    <Compile Include="Channel\Monitor\Capabilities\MessageTags.cs" />
     <Compile Include="Channel\Monitor\Replies\Actions\ActionsArgs.cs" />
     <Compile Include="Channel\Monitor\Replies\Actions\ActionTypes.cs" />
     <Compile Include="Channel\Monitor\Replies\Actions\ActionsFilter.cs" />

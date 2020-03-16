@@ -40,14 +40,12 @@ namespace IRCnect.Channel.Monitor
         /// <summary>
         /// Empty Monitor args to used instead of null.
         /// </summary>
-        new public readonly static MonitorArgs Empty = new EmptyMonitorArgs(); 
-
-        string m_Data = null;
+        new public readonly static MonitorArgs Empty = new EmptyMonitorArgs();
 
         /// <summary>
         /// Data passes in before processing (usually raw data)
         /// </summary>
-        public string data { get { return m_Data; } }
+        public readonly string data;
 
         /// <summary>
         /// Constructor
@@ -56,7 +54,7 @@ namespace IRCnect.Channel.Monitor
         public MonitorArgs(string data)
             : base()
         {
-            m_Data = data;
+            this.data = data;
         }
 
         /// <summary>
