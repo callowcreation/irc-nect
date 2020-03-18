@@ -52,7 +52,9 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds
         {
             Match match = m_Regex.Match(message);
 
-            var args = GetNewArgs(match);
+            var args = new InboundsArgs(message);
+            args.messageMatch = match;
+            args.data = match.Value;
             if (match.Success)
             {
                 args.MatchFilters(m_Filters);
@@ -67,6 +69,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds
         /// </summary>
         /// <param name="match">The match that will be preformed.</param>
         /// <returns>Args used by filters to store parsed data.</returns>
+        [Obsolete("Use default constructor for a new InboundsArgs", true)]
         protected virtual InboundsArgs GetNewArgs(Match match)
         {
             return new InboundsArgs(match);

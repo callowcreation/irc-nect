@@ -56,9 +56,14 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
         /// Constructor
         /// </summary>
         /// <param name="messageMatch">Previously match data for further parsing/matching.</param>
-        public CommandsArgs(Match messageMatch)
-            : base(messageMatch)
-        { }
+        [Obsolete("Use default constructor passing the raw data as the only parameter", true)]
+        public CommandsArgs(Match messageMatch) : base(messageMatch) { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="data">Data passes in before prcessing (usually raw data)</param>
+        public CommandsArgs(string data) : base(data) { }
 
         /// <summary>
         /// Compares data to filters for matches of specific data.

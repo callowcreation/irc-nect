@@ -27,12 +27,12 @@ namespace IRCnect.Channel.Monitor.Capabilities
     /// <summary>
     /// IRC Tags holder to parse string tag into property name and value
     /// </summary>
-    public abstract class MessageTags
+    public abstract class IRCTags
     {
         /// <summary>
         /// Use a static property infos to reduce reflections lookups
         /// </summary>
-        /// <typeparam name="T">Any MessageTags</typeparam>
+        /// <typeparam name="T">Any IRCTags</typeparam>
         /// <returns></returns>
         protected static Dictionary<string, PropertyInfo> GetPropertyInfos<T>()
         {
@@ -53,7 +53,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// <summary>
         /// IRC Tags holder to parse string tag into property name and value
         /// </summary>
-        public MessageTags() { }
+        public IRCTags() { }
 
         /// <summary>
         /// Parse string tag into property name and value
@@ -117,7 +117,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// </summary>
         /// <param name="info">Semicolon delimied list of key value pairs tag-one=value</param>
         /// <returns>Expected prototype properties</returns>
-        public static T GetTags<T>(string info) where T : MessageTags, new()
+        public static T GetTags<T>(string info) where T : IRCTags, new()
         {
             string text = info.TrimStart('@');
             int indexof = text.IndexOf(' ');
@@ -141,7 +141,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// <param name="type"></param>
         /// <param name="info">Semicolon delimied list of key value pairs tag-one=value</param>
         /// <returns>Expected prototype properties</returns>
-        public static MessageTags GetTags(Type type, string info)
+        public static IRCTags GetTags(Type type, string info)
         {
             if (type == null) return null;
 
@@ -153,7 +153,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
             {
                 Console.WriteLine($"{properties[i]}");
             }*/
-            MessageTags instance = (MessageTags)Activator.CreateInstance(type);
+            IRCTags instance = (IRCTags)Activator.CreateInstance(type);
             instance.Parser(properties);
             instance.properties = properties;
             return instance;

@@ -45,7 +45,12 @@ namespace IRCnect.Channel.Monitor
         /// <summary>
         /// Data passes in before processing (usually raw data)
         /// </summary>
-        public readonly string data;
+        public string data { get; set; }
+
+        /// <summary>
+        /// Data passes in before processing (never changed from message sent over IRC)
+        /// </summary>
+        public readonly string rawData;
 
         /// <summary>
         /// Constructor
@@ -55,6 +60,7 @@ namespace IRCnect.Channel.Monitor
             : base()
         {
             this.data = data;
+            rawData = this.data;
         }
 
         /// <summary>

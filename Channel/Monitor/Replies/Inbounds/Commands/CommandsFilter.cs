@@ -42,17 +42,27 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
             : base(pattern)
         { }
 
+
         /// <summary>
-        /// Gets the specific type of args required for this class to store data.
-        /// <para>Override to provide unique class interface args.</para>
+        /// Parse a chat message and returns matched expresions
         /// </summary>
-        /// <param name="match">The match that will be preformed.</param>
-        /// <returns>Args used by filters to store parsed data.</returns>
-        protected override InboundsArgs GetNewArgs(Match match)
+        /// <param name="message">Raw chat response message to parse</param>
+        /// <returns>Matched expressions class</returns>
+        public override MonitorArgs Parse(string message)
         {
-            return new CommandsArgs(match);
+            Match match = m_Regex.Match(message);
+
+            var args = new CommandsArgs(message);
+            args.messageMatch = match;
+            args.data = match.Value;
+            if (match.Success)
+            {
+                args.MatchFilters(m_Filters);
+                //IRCnect.Utils.Logger.L(args.GetType().Name + "<-----" + args.channel);
+            }
+            return args;
         }
-        
+
         /// <summary>
         /// Adds a command to the statement check list
         /// <para>NOTE: Command checks added this way are case sensitive</para>

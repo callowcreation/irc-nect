@@ -28,7 +28,6 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds
     [Serializable]
     public class InboundsArgs : RepliesArgs
     {
-        Match m_MessageMatch = null;
 
         /// <summary>
         /// Greeting if found in the matching/parsing.
@@ -38,7 +37,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds
         /// <summary>
         /// Match expression if match was successful.
         /// </summary>
-        public Match messageMatch { get { return m_MessageMatch; } }
+        public Match messageMatch { get; set; } = null;
 
         /// <summary>
         /// Nick name of the user found in the parsed message.
@@ -62,11 +61,14 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds
         /// Constructor
         /// </summary>
         /// <param name="messageMatch">Previously match data for further parsing/matching.</param>
-        public InboundsArgs(Match messageMatch)
-            : base(messageMatch.Value)
-        {
-            this.m_MessageMatch = messageMatch;
-        }
+        [Obsolete("Use default constructor passing the raw data as the only parameter", true)]
+        public InboundsArgs(Match messageMatch) : base(messageMatch.Value) { }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="data">Data passes in before prcessing (usually raw data)</param>
+        public InboundsArgs(string data) : base(data) { }
 
         /// <summary>
         /// Compares data to filters for matches of specific data.
