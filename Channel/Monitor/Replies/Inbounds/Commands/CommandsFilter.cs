@@ -28,19 +28,64 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
     /// </summary>
     public class CommandsFilter : InboundsFilter
     {
+        static string GetCommandFormatSyntax(string commandSymbol)
+        {
+            string symbol = EscapeChars.FirstOrDefault(x => x == commandSymbol);
 
-        const string COMMAND_SYNTAX_FORMAT = "(!{0})";
-        const string COMMAND_FORMAT = "^" + COMMAND_SYNTAX_FORMAT + "$";
-        const string PARAMETERIZED_COMMAND_FORMAT = "^" + COMMAND_SYNTAX_FORMAT + @"\s(\S+)?$";
-        const string N_PARAMETERIZED_COMMAND_FORMAT = "^" + COMMAND_SYNTAX_FORMAT + @"(\s?\S+\b)+$";
+            string formatSyntax = string.IsNullOrEmpty(symbol) ? "({0}{1})" : "(\\{0}{1})";
+
+            return string.Format(formatSyntax, commandSymbol, "{0}");
+        }
+
+        static string GetCommandFormat(string commandSymbol)
+        {
+            return "^" + GetCommandFormatSyntax(commandSymbol) + "$";
+        }
+
+        static string GetParameterizedCommandFormat(string commandSymbol)
+        {
+            return "^" + GetCommandFormatSyntax(commandSymbol) + @"\s(\S+)?$";
+        }
+
+        static string GetNParameterizedCommandFormat(string commandSymbol)
+        {
+            return "^" + GetCommandFormatSyntax(commandSymbol) + @"(\s?\S+\b)+$";
+        }
+
+        /// <summary>
+        /// Command sybmol to use as a prefix for all commands
+        /// </summary>
+        public readonly string commandSymbol;
+
+        /// <summary>
+        /// Char used as command symbols that need to be escaped for regex
+        /// </summary>
+        public static List<string> EscapeChars { get; } = new List<string>(new string [] { "$", "-" });
 
         /// <summary>
         /// Constructor 
         /// </summary>
         /// <param name="pattern">Regular expressions pattern to match against input.</param>
+        [System.Obsolete("Use CommandsFilter constructor that allows for custom command symbols")]
         public CommandsFilter(string pattern = MESSAGE_PATTERN)
             : base(pattern)
-        { }
+        {
+            commandSymbol = "!";
+        }
+
+        /// <summary>
+        /// Constructor 
+        /// <para>
+        /// Use InboundsFilter.MESSAGE_PATTERN as a default value for the pattern parameter
+        /// </para>
+        /// </summary>
+        /// <param name="commandSymbol">Command sybmol to use as a prefix for all commands.</param>
+        /// <param name="pattern">Regular expressions pattern to match against input.</param>
+        public CommandsFilter(string commandSymbol, string pattern)
+            : base(pattern)
+        {
+            this.commandSymbol = commandSymbol;
+        }
 
 
         /// <summary>
@@ -71,7 +116,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
         /// <param name="callbacks">Callbacks to invoke on commands filtered</param>
         public CommandsFilter AddBasicCommand(string command, params Action<MonitorArgs>[] callbacks)
         {
-            AddFilter(COMMAND_FORMAT, command, RegexOptions.None, callbacks);
+            AddFilter(GetCommandFormat(commandSymbol), command, RegexOptions.None, callbacks);
             return this;
         }
 
@@ -82,7 +127,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
         /// <param name="callbacks">Callbacks to invoke on commands filtered</param>
         public CommandsFilter AddParameterizedCommand(string command, params Action<MonitorArgs>[] callbacks)
         {
-            AddFilter(PARAMETERIZED_COMMAND_FORMAT, command, RegexOptions.None, callbacks);
+            AddFilter(GetParameterizedCommandFormat(commandSymbol), command, RegexOptions.None, callbacks);
             return this;
         }
 
@@ -95,7 +140,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
         /// <param name="callbacks">Callbacks to invoke on commands filtered</param>
         public CommandsFilter AddNParameterCommand(string command, params Action<MonitorArgs>[] callbacks)
         {
-            AddFilter(N_PARAMETERIZED_COMMAND_FORMAT, command, RegexOptions.None, callbacks);
+            AddFilter(GetNParameterizedCommandFormat(commandSymbol), command, RegexOptions.None, callbacks);
             return this;
         }
 

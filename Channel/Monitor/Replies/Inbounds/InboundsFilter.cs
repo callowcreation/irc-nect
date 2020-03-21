@@ -31,7 +31,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds
         /// <summary>
         /// Pattern to match for incomming message.
         /// </summary>
-        protected const string MESSAGE_PATTERN = @":(\w+)!.*#(\w+) :" + PATTERN_ALL;
+        public const string MESSAGE_PATTERN = @":(\w+)!.*#(\w+) :" + PATTERN_ALL;
         //
         internal const string GREETING_FORMAT = @"^((?:.*)?(?:\W|\b|\s)+({0})(?:\W|\s|\b)+(?:.*)?)$";
 

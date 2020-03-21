@@ -48,7 +48,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// <summary>
         /// Use a static property infos to reduce reflections lookups
         /// </summary>
-        protected string[] properties { get; private set; }
+        protected string[] properties { get; set; }
 
         /// <summary>
         /// IRC Tags holder to parse string tag into property name and value

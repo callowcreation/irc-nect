@@ -55,7 +55,7 @@ namespace IRCnect.Channel.Monitor
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="data">Data passes in before prcessing (usually raw data)</param>
+        /// <param name="data">Data passes in before prcessing</param>
         public MonitorArgs(string data)
             : base()
         {
