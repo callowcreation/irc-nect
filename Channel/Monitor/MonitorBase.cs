@@ -102,6 +102,7 @@ namespace IRCnect.Channel.Monitor
 
         /// <summary>
         /// Adds filters to filter the incoming message.
+        /// <para>Duplicate filters will not be added again</para>
         /// </summary>
         /// <param name="filters">Filters to add derived from MonitorFilters.</param>
         /// <returns>The Monitor for chain filter additions.</returns>

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -71,6 +72,27 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
         /// <param name="filters">Filters to match data against.</param>
         public override void MatchFilters(Dictionary<Regex, Action<MonitorArgs>> filters)
         {
+            /*string[] dataSplit = this.data.Split(' ');
+
+            string item = s_Names.FirstOrDefault(x => dataSplit.Contains(x));
+
+            if (item != null)
+            {
+
+                foreach (var filter in filters)
+                {
+                    Match match = filter.Key.Match(this.said);
+                    if (match.Success)
+                    {
+                        m_Command = match.Groups[1].Value;
+                        m_Argument = match.Groups[2].Value.Trim(' ');
+                        m_NArgument = match.Value.Split(' ').Skip(1).ToArray();
+
+                        filter.Value.Invoke(this);
+                        break;
+                    }
+                }
+            }*/
             foreach (var filter in filters)
             {
                 Match match = filter.Key.Match(this.said);
@@ -81,7 +103,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
                     m_NArgument = match.Value.Split(' ').Skip(1).ToArray();
 
                     filter.Value.Invoke(this);
-                    return;
+                    break;
                 }
             }
         }
