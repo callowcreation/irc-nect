@@ -49,7 +49,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
 
         static string GetNParameterizedCommandFormat(string commandSymbol)
         {
-            return "^" + GetCommandFormatSyntax(commandSymbol) + @"(\s?\S+\b)+$";
+            return "^" + GetCommandFormatSyntax(commandSymbol) + @"(\s\S+\b)+$";
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace IRCnect.Channel.Monitor.Replies.Inbounds.Commands
         /// Constructor 
         /// </summary>
         /// <param name="pattern">Regular expressions pattern to match against input.</param>
-        [System.Obsolete("Use CommandsFilter constructor that allows for custom command symbols")]
+        [Obsolete("Use CommandsFilter constructor that allows for custom command symbols")]
         public CommandsFilter(string pattern = MESSAGE_PATTERN)
             : base(pattern)
         {

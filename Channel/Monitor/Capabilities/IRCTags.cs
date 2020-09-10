@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Text;
 
 namespace IRCnect.Channel.Monitor.Capabilities
 {
@@ -29,6 +30,9 @@ namespace IRCnect.Channel.Monitor.Capabilities
     /// </summary>
     public abstract class IRCTags
     {
+        const char EQUAL_SIGN = '=';
+        const char SEMICOLON_SIGN = ';';
+
         /// <summary>
         /// Use a static property infos to reduce reflections lookups
         /// </summary>
@@ -51,6 +55,11 @@ namespace IRCnect.Channel.Monitor.Capabilities
         protected string[] properties { get; set; }
 
         /// <summary>
+        /// The message send unchanged
+        /// </summary>
+        protected string rawData { get; set; }
+
+        /// <summary>
         /// IRC Tags holder to parse string tag into property name and value
         /// </summary>
         public IRCTags() { }
@@ -59,25 +68,26 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// Parse string tag into property name and value
         /// <para>ie. @tag-one=value;tag-two=value</para>
         /// </summary>
-        /// <param name="tags">IRC Message tags string ie. @tag-name=value</param>
-        public abstract void Parser(string[] tags);
+        public abstract void Parse();
 
         /// <summary>
         /// Parse string tag into property name and value
         /// </summary>
-        /// <param name="tag">Key value pairs key=valye</param>
+        /// <param name="target"></param>
+        /// <param name="propertyInfos"></param>
+        /// <param name="tag">Key value pairs key=value</param>
         /// <param name="valueAction">How to get the value</param>
-        protected void DefaultParser(string[] tag, Func<PropertyInfo, string, object> valueAction)
+        public static void DefaultParser(object target, Dictionary<string, PropertyInfo> propertyInfos, string[] tag, Func<PropertyInfo, string, object> valueAction)
         {
             string tagName = tag[0];
             string tagValue = tag.Length == 2 ? tag[1] : string.Empty;
 
-            string propName = MakePropName(tagName);
-      
+            string propName = MakePropertyName(tagName);
+
             if (propertyInfos.TryGetValue(propName, out PropertyInfo propertyInfo) && propertyInfo.CanWrite)
             {
                 object value = valueAction(propertyInfo, tagValue);
-                propertyInfo.SetValue(this, value, null);
+                propertyInfo.SetValue(target, value, null);
             }
             /*else
             {
@@ -89,9 +99,30 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// 
         /// </summary>
         /// <returns></returns>
+        Dictionary<string, string> GetPropertyNamesToTagNames()
+        {
+            return properties.Select(x => x.Split(EQUAL_SIGN)[0]).ToDictionary(k => MakePropertyName(k), v => v);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return string.Join(";", properties);
+            Dictionary<string, string> propsToTags = GetPropertyNamesToTagNames();
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (var item in propertyInfos)
+            {
+                stringBuilder.Append(propsToTags[item.Key]);
+                stringBuilder.Append(EQUAL_SIGN);
+                stringBuilder.Append(item.Value.GetValue(this, null));
+                stringBuilder.Append(SEMICOLON_SIGN);
+            }
+
+            return stringBuilder.ToString().TrimEnd(SEMICOLON_SIGN);
         }
 
         /// <summary>
@@ -100,7 +131,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// </summary>
         /// <param name="tagName">The tag name which may contain - and a letter display-name for example</param>
         /// <returns></returns>
-        protected static string MakePropName(string tagName)
+        public static string MakePropertyName(string tagName)
         {
             return Regex.Replace(tagName, @"-[a-z]|_[a-z]", Evaluator, RegexOptions.IgnoreCase);
         }
@@ -109,8 +140,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         {
             return match.ToString().ToUpper().Replace("-", "").Replace("_", "");
         }
-
-
+        
         /// <summary>
         /// Gets the topic prototype properties
         /// <para>ie. @tag-one=value;tag-two=value;</para>
@@ -121,16 +151,14 @@ namespace IRCnect.Channel.Monitor.Capabilities
         {
             string text = info.TrimStart('@');
             int indexof = text.IndexOf(' ');
-            string[] properties = text.Substring(0, indexof > -1 ? indexof : text.Length).Trim().Split(';');
+            string[] properties = text.Substring(0, indexof > -1 ? indexof : text.Length).Trim().Split(SEMICOLON_SIGN);
 
-            /*for (int i = 0; i < properties.Length; i++)
+            T instance = new T()
             {
-                Console.WriteLine($"{properties[i]}");
-            }*/
-
-            T instance = new T();
-            instance.Parser(properties);
-            instance.properties = properties;
+                rawData = info,
+                properties = properties
+            };
+            instance.Parse();
             return instance;
         }
 
@@ -149,13 +177,10 @@ namespace IRCnect.Channel.Monitor.Capabilities
             int indexof = text.IndexOf(' ');
             string[] properties = text.Substring(0, indexof > -1 ? indexof : text.Length).Trim().Split(';');
 
-            /*for (int i = 0; i < properties.Length; i++)
-            {
-                Console.WriteLine($"{properties[i]}");
-            }*/
             IRCTags instance = (IRCTags)Activator.CreateInstance(type);
-            instance.Parser(properties);
+            instance.rawData = info;
             instance.properties = properties;
+            instance.Parse();
             return instance;
         }
     }
