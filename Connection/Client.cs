@@ -46,7 +46,7 @@ namespace IRCnect.Connection
         public StreamWriter writer { get; private set; }
 
         /// <summary>
-        /// 
+        /// Provides client connections for TCP network services.
         /// </summary>
         public TcpClient tcpClient { get; private set; } = null;
 

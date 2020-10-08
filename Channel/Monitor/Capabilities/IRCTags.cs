@@ -73,8 +73,8 @@ namespace IRCnect.Channel.Monitor.Capabilities
         /// <summary>
         /// Parse string tag into property name and value
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="propertyInfos"></param>
+        /// <param name="target">An IRCTags derived object</param>
+        /// <param name="propertyInfos">Collection of property names and info pair</param>
         /// <param name="tag">Key value pairs key=value</param>
         /// <param name="valueAction">How to get the value</param>
         public static void DefaultParser(object target, Dictionary<string, PropertyInfo> propertyInfos, string[] tag, Func<PropertyInfo, string, object> valueAction)
@@ -84,6 +84,19 @@ namespace IRCnect.Channel.Monitor.Capabilities
 
             string propName = MakePropertyName(tagName);
 
+            FindPropertyAndAssignValue(target, propertyInfos, valueAction, tagValue, propName);
+        }
+
+        /// <summary>
+        /// Checks object for peoperty by tag name and assigns the value from the targetValue
+        /// </summary>
+        /// <param name="target">An IRCTags derived object</param>
+        /// <param name="propertyInfos">Collection of property names and info pair</param>
+        /// <param name="valueAction">How to convert the value</param>
+        /// <param name="tagValue">The original value</param>
+        /// <param name="propName">Name of the property to write the vale to</param>
+        public static void FindPropertyAndAssignValue(object target, Dictionary<string, PropertyInfo> propertyInfos, Func<PropertyInfo, string, object> valueAction, string tagValue, string propName)
+        {
             if (propertyInfos.TryGetValue(propName, out PropertyInfo propertyInfo) && propertyInfo.CanWrite)
             {
                 object value = valueAction(propertyInfo, tagValue);
@@ -96,7 +109,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         }
 
         /// <summary>
-        /// 
+        /// A key valye pair of memeber property and its json/IRC tag
         /// </summary>
         /// <returns></returns>
         Dictionary<string, string> GetPropertyNamesToTagNames()
@@ -105,7 +118,7 @@ namespace IRCnect.Channel.Monitor.Capabilities
         }
 
         /// <summary>
-        /// 
+        /// Combines the properties and values to mimic the original IRC string
         /// </summary>
         /// <returns></returns>
         public override string ToString()

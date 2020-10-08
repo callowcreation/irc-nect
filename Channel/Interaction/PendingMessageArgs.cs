@@ -47,7 +47,7 @@ namespace IRCnect.Channel.Interaction
         new public readonly static EmptyPendingMessageArgs Empty = new EmptyPendingMessageArgs();
 
         /// <summary>
-        /// 
+        /// Type of message in the queue
         /// </summary>
         public enum Type
         {

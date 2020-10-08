@@ -1,5 +1,0 @@
-G:\Programming\Visual CSharp\TwitchIRCforUnity\TwitchUnityIRC\IRCnect\bin\Release\IRCnect.XML
-G:\Programming\Visual CSharp\TwitchIRCforUnity\TwitchUnityIRC\IRCnect\bin\Release\IRCnect.dll
-G:\Programming\Visual CSharp\TwitchIRCforUnity\TwitchUnityIRC\IRCnect\bin\Release\IRCnect.pdb
-G:\Programming\Visual CSharp\TwitchIRCforUnity\TwitchUnityIRC\IRCnect\obj\Release\IRCnect.dll
-G:\Programming\Visual CSharp\TwitchIRCforUnity\TwitchUnityIRC\IRCnect\obj\Release\IRCnect.pdb

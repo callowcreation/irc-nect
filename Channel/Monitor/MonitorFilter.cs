@@ -119,7 +119,7 @@ namespace IRCnect.Channel.Monitor
         }
 
         /// <summary>
-        /// 
+        /// Removes all regex fiters
         /// </summary>
         public void RemoveAll()
         {
